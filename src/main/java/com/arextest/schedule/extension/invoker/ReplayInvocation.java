@@ -1,4 +1,6 @@
-package com.arextest.extension.invoker;
+package com.arextest.schedule.extension.invoker;
+
+import com.arextest.schedule.extension.invoker.ReplayExtensionInvoker;
 
 import java.util.Map;
 

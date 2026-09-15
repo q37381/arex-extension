@@ -1,11 +1,16 @@
 package com.arextest.extension.invoker;
 
+import com.alibaba.dubbo.config.ApplicationConfig;
+import com.alibaba.dubbo.config.ReferenceConfig;
+import com.alibaba.dubbo.rpc.RpcContext;
+import com.alibaba.dubbo.rpc.service.GenericService;
+import com.arextest.schedule.extension.invoker.InvokerConstants;
+import com.arextest.schedule.extension.invoker.ReplayExtensionInvoker;
+import com.arextest.schedule.extension.invoker.ReplayInvocation;
+import com.arextest.schedule.extension.model.ReplayInvokeResult;
+
 import java.util.List;
 import java.util.Map;
-import org.apache.dubbo.config.ApplicationConfig;
-import org.apache.dubbo.config.ReferenceConfig;
-import org.apache.dubbo.rpc.RpcContext;
-import org.apache.dubbo.rpc.service.GenericService;
 
 /**
  * @author wildeslam.
@@ -23,7 +28,7 @@ public class DefaultDubboInvoker implements ReplayExtensionInvoker {
     ReplayInvokeResult replayInvokeResult = new ReplayInvokeResult();
     try {
 
-      RpcContext.getServiceContext().setAttachments(replayInvocation.get(InvokerConstants.HEADERS, Map.class));
+      RpcContext.getServerContext().setAttachments(replayInvocation.get(InvokerConstants.HEADERS, Map.class));
 
       ReferenceConfig<GenericService> reference = new ReferenceConfig<>();
       reference.setApplication(new ApplicationConfig("defaultDubboInvoker"));

@@ -1,4 +1,4 @@
-package com.arextest.extension.invoker;
+package com.arextest.schedule.extension.model;
 
 import java.util.Map;
 import lombok.Data;

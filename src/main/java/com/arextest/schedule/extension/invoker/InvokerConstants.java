@@ -1,4 +1,4 @@
-package com.arextest.extension.invoker;
+package com.arextest.schedule.extension.invoker;
 
 public class InvokerConstants {
 
