@@ -3,6 +3,7 @@ package com.arextest.extension.invoker;
 import com.alibaba.dubbo.config.ApplicationConfig;
 import com.alibaba.dubbo.config.ReferenceConfig;
 import com.alibaba.dubbo.rpc.RpcContext;
+import com.alibaba.dubbo.rpc.RpcResult;
 import com.alibaba.dubbo.rpc.service.GenericService;
 import com.arextest.schedule.extension.invoker.InvokerConstants;
 import com.arextest.schedule.extension.invoker.ReplayExtensionInvoker;
@@ -28,7 +29,7 @@ public class DefaultDubboInvoker implements ReplayExtensionInvoker {
     ReplayInvokeResult replayInvokeResult = new ReplayInvokeResult();
     try {
 
-      RpcContext.getServerContext().setAttachments(replayInvocation.get(InvokerConstants.HEADERS, Map.class));
+      RpcContext.getContext().setAttachments(replayInvocation.get(InvokerConstants.HEADERS, Map.class));
 
       ReferenceConfig<GenericService> reference = new ReferenceConfig<>();
       reference.setApplication(new ApplicationConfig("defaultDubboInvoker"));
@@ -45,8 +46,12 @@ public class DefaultDubboInvoker implements ReplayExtensionInvoker {
           (replayInvocation.get(InvokerConstants.DUBBO_PARAMETERS, List.class)).toArray());
 
       replayInvokeResult.setResult(result);
+      if (result instanceof RpcResult) {
+        replayInvokeResult.setResponseProperties(((RpcResult) result).getAttachments());
+      } else {
+        replayInvokeResult.setResponseProperties((Map<String, String>) RpcContext.getContext().get("teslaProtocolResponseHeader"));
+      }
       // add replayId
-      replayInvokeResult.setResponseProperties(RpcContext.getServerContext().getAttachments());
     } catch (Exception e) {
       replayInvokeResult.setException(e);
       replayInvokeResult.setErrorMsg(e.getMessage());
